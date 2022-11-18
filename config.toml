@@ -1,0 +1,15 @@
+[sources]
+#root_dir = "/Users/alp/workspace/eclipse-workspace/VersionTest/src"
+#src_files = ["/Users/alp/workspace/eclipse-workspace/VersionTest/src/VersionTest.java"]
+root_dir = "/Users/alp/workspace/dedis/java-sources/java18-src/java.base/java/lang/"
+src_files = ["/Users/alp/workspace/dedis/java-sources/java18-src/java.base/java/lang/Double.java"]
+
+[whitelist]
+class_file = "/Users/alp/workspace/dedis/determ-sandbox/jvm_sandbox/wlist_class.txt"
+method_file = "/Users/alp/workspace/dedis/determ-sandbox/jvm_sandbox/wlist_methods.txt"
+
+[blacklist]
+method_file = "/Users/alp/workspace/dedis/determ-sandbox/jvm_sandbox/blist_methods.txt"
+
+[user_classes]
+class_names = ["auxil.Auxilary"]
