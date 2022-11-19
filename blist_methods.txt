@@ -1,0 +1,58 @@
+java.lang.Boolean describeConstable()Ljava/util/Optional<Ljava/lang/constant/DynamicConstantDesc<Ljava/lang/Boolean;>;>;
+java.lang.Byte describeConstable()Ljava/util/Optional<Ljava/lang/constant/DynamicConstantDesc<Ljava/lang/Byte;>;>;
+java.lang.Character describeConstable()Ljava/util/Optional<Ljava/lang/constant/DynamicConstantDesc<Ljava/lang/Character;>;>;
+java.lang.Character.Subset hashCode()I
+java.lang.Character.UnicodeBlock hashCode()I
+java.lang.Character.UnicodeScript hashCode()I
+java.lang.Double describeConstable()Ljava/util/Optional<Ljava/lang/constant/DynamicConstantDesc<Ljava/lang/Double;>;>; 
+java.lang.Double doubleToRawLongBits(D)J
+java.lang.Double resolveConstantDesc resolveConstantDesc(Ljava/lang/invoke/MethodHandles$Lookup;)Ljava/lang/Double;
+java.lang.Double (Ljava/lang/String;)V|Ljava/lang/NumberFormatException;
+java.lang.Double parseDouble(Ljava/lang/String;)D|Ljava/lang/NumberFormatException;
+java.lang.Double toHexString(D)Ljava/lang/String;
+java.lang.Double toString()Ljava/lang/String;
+java.lang.Double toString(D)Ljava/lang/String;
+java.lang.Double valueOf(Ljava/lang/String;)Ljava/lang/Double;|Ljava/lang/NumberFormatException;
+
+java.lang.Float describeConstable()Ljava/util/Optional<Ljava/lang/constant/DynamicConstantDesc<Ljava/lang/Float;>;>;
+java.lang.Float floatToRawIntBits(F)J
+java.lang.Float resolveConstantDesc resolveConstantDesc(Ljava/lang/invoke/MethodHandles$Lookup;)Ljava/lang/Float;
+java.lang.Float (Ljava/lang/String;)V|Ljava/lang/NumberFormatException;
+java.lang.Float parseFloat(Ljava/lang/String;)F|Ljava/lang/NumberFormatException;
+java.lang.Float toHexString(F)Ljava/lang/String;
+java.lang.Float toString()Ljava/lang/String;
+java.lang.Float toString(F)Ljava/lang/String;
+java.lang.Float valueOf(Ljava/lang/String;)Ljava/lang/Float;|Ljava/lang/NumberFormatException;
+
+java.lang.Integer describeConstable()Ljava/util/Optional<Ljava/lang/constant/DynamicConstantDesc<Ljava/lang/Integer;>;>;
+java.lang.Integer resolveConstantDesc resolveConstantDesc(Ljava/lang/invoke/MethodHandles$Lookup;)Ljava/lang/Integer;
+java.lang.Integer getInteger(Ljava/lang/String;)Ljava/lang/Integer;
+java.lang.Integer getInteger(Ljava/lang/String;I)Ljava/lang/Integer;
+java.lang.Integer getInteger(Ljava/lang/String;Ljava/lang/Integer;)Ljava/lang/Integer;
+
+
+java.lang.Long describeConstable()Ljava/util/Optional<Ljava/lang/constant/DynamicConstantDesc<Ljava/lang/Long;>;>;
+java.lang.Long resolveConstantDesc resolveConstantDesc(Ljava/lang/invoke/MethodHandles$Lookup;)Ljava/lang/Long;
+java.lang.Long getLong(Ljava/lang/String;)Ljava/lang/Long;
+java.lang.Long getLong(Ljava/lang/String;J)Ljava/lang/Long;
+java.lang.Long getLong(Ljava/lang/String;Ljava/lang/Long;)Ljava/lang/Long;
+
+java.lang.Math ulp(D)D
+java.lang.Math ulp(F)F
+
+java.lang.Short describeConstable()Ljava/util/Optional<Ljava/lang/constant/DynamicConstantDesc<Ljava/lang/Short;>;>;
+java.lang.Short resolveConstantDesc resolveConstantDesc(Ljava/lang/invoke/MethodHandles$Lookup;)Ljava/lang/Short;
+
+java.lang.StrictMath ulp(D)D
+java.lang.StrictMath ulp(F)F
+
+java.lang.String codePoints()Ljava/util/stream/IntStream;
+
+java.lang.String describeConstable()Ljava/util/Optional<Ljava/lang/constant/DynamicConstantDesc<Ljava/lang/String;>;>;
+java.lang.String intern()Ljava/lang/String;
+java.lang.String resolveConstantDesc resolveConstantDesc(Ljava/lang/invoke/MethodHandles$Lookup;)Ljava/lang/String;
+java/lang/String toLowerCase(Ljava/util/Locale;)Ljava/lang/String;
+java/lang/String toUpperCase(Ljava/util/Locale;)Ljava/lang/String;
+java.lang.String valueOf(D)Ljava/lang/String;
+java.lang.String valueOf(F)Ljava/lang/String;
+
