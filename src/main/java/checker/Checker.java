@@ -20,6 +20,7 @@ public class Checker {
     String config;
     String[] rootDir;
     List<Object> srcFiles;
+    HashSet<String> userDefined;
     HashSet<String> wlistClasses;
     HashMap<String, HashSet<String>> wlistMethods;
     HashMap<String, HashSet<String>> blistMethods;
@@ -30,7 +31,8 @@ public class Checker {
         wlistClasses = new HashSet<>();
         wlistMethods = new HashMap<>();
         blistMethods = new HashMap<>();
-        readConfig ();
+        userDefined = new HashSet<>();
+        readConfig();
     }
 
     public void printData() {
@@ -56,6 +58,7 @@ public class Checker {
     }
 
     public void execute() {
+        HashSet<String> leftovers = new HashSet<>();
         for (Object o : srcFiles) {
             if (o instanceof String) {
                 String file = (String) o;
@@ -64,6 +67,7 @@ public class Checker {
                 ASTData astData = extractASTData(cu);
                 // Check if the declaring classes of the methods are whitelisted
                 for (String cname : astData.methods.keySet()) {
+                    System.out.println("Checking class: " + cname);
                     HashSet<String> methods = astData.methods.get(cname);
                     if (wlistClasses.contains(cname)) {
                         // If the declaring class is whitelisted we still need to make sure that all of its methods
@@ -73,8 +77,12 @@ public class Checker {
                             for (String mname : methods) {
                                 if (blist.contains(mname)) {
                                     System.out.println("Class: " + cname + " - Method: " + mname + " is blacklisted");
+                                } else {
+                                    System.out.println("Class: " + cname + " is whitelisted but " + mname + " is not");
                                 }
                             }
+                        } else {
+                            System.out.println("Class: " + cname + " is safe!");
                         }
                     } else {
                         // The declaring class is not whitelisted but its methods might be.
@@ -85,6 +93,8 @@ public class Checker {
                                     System.out.println("Class: " + cname + " - Method: " + mname + " is not whitelisted");
                                 }
                             }
+                        } else {
+                            System.out.println("Class: " + cname + " does not have any whitelisted methods");
                         }
                     }
                 }
@@ -92,8 +102,11 @@ public class Checker {
                 for (String cname : astData.classes) {
                     // If the class has a method in the source code, we have already checked it above
                     if (!astData.methods.containsKey(cname)) {
+                        System.out.println("mesela ben: " + cname);
                         if (!wlistClasses.contains(cname)) {
-                            System.out.println("Class: " + cname + " is not whitelisted");
+                            leftovers.add(cname);
+                        } else {
+                            System.out.println("Class: " + cname + " is whitelisted");
                         }
                     }
                 }
@@ -101,6 +114,25 @@ public class Checker {
                 System.err.println("Wrong type in source files. Expected string!");
                 System.exit(1);
             }
+            for (String c : leftovers) {
+                if (!userDefined.contains(c)) {
+                    System.out.println("This is the end for class: " + c);
+                }
+            }
+        }
+        for (String s : userDefined) {
+            System.out.println("user defined : " + s);
+        }
+    }
+
+    private void printASTData(ASTData data) {
+        System.out.println("============");
+        for (String c : data.classes) {
+            System.out.println("CLASS: " + c);
+        }
+        System.out.println("============");
+        for (String c : data.methods.keySet()) {
+            System.out.println(c + " --> " + data.methods.get(c).toString());
         }
     }
 
@@ -112,6 +144,7 @@ public class Checker {
         parser.setResolveBindings(true);
         parser.setBindingsRecovery(true);
         parser.setUnitName(srcFile);
+        System.out.println(Arrays.toString(srcPaths));
         parser.setEnvironment(null, srcPaths, null, true);
         Map<String, String> options = JavaCore.getOptions();
         JavaCore.setComplianceOptions(JavaCore.latestSupportedJavaVersion(), options);
@@ -119,18 +152,32 @@ public class Checker {
         return (CompilationUnit) parser.createAST(null);
     }
 
+    private void addUserClasses(String cname) {
+        ArrayList<Integer> idxs = new ArrayList<>();
+        for (int i = 0; i < cname.length(); i++) {
+            if (cname.charAt(i) == '.') {
+                idxs.add(i);
+            }
+        }
+        for (int idx : idxs) {
+            userDefined.add(cname.substring(0, idx));
+        }
+        userDefined.add(cname);
+    }
+
     public ASTData extractASTData(CompilationUnit cu) {
 
         ASTData astData = new ASTData();
 
         cu.accept(new ASTVisitor() {
-
             public boolean helperTypeBinding(ITypeBinding tBinding) {
-                if (!tBinding.isPrimitive()) {
-                    if (tBinding.isParameterizedType()) {
-                        astData.classes.add(tBinding.getTypeDeclaration().getQualifiedName());
-                    } else {
-                        astData.classes.add(tBinding.getQualifiedName());
+                if (!tBinding.isFromSource()) {
+                    if (!tBinding.isPrimitive()) {
+                        if (tBinding.isParameterizedType()) {
+                            astData.classes.add(tBinding.getTypeDeclaration().getQualifiedName());
+                        } else {
+                            astData.classes.add(tBinding.getQualifiedName());
+                        }
                     }
                 }
                 return true;
@@ -145,43 +192,47 @@ public class Checker {
                     return false;
                 }
                 String cname;
-                if (cBinding.isParameterizedType()) {
-                    cname = cBinding.getTypeDeclaration().getQualifiedName();
-                    astData.classes.add(cname);
-                } else {
-                    cname = cBinding.getQualifiedName();
-                    astData.classes.add(cname);
-                }
-                String mname = mBinding.getKey().split("\\.")[1];
-                if (astData.methods.containsKey(cname)) {
-                    astData.methods.get(cname).add(mname);
-                } else {
-                    astData.methods.put(cname, new HashSet<>(Arrays.asList(mname)));
+                if (!cBinding.isFromSource()) {
+                    if (cBinding.isParameterizedType()) {
+                        cname = cBinding.getTypeDeclaration().getQualifiedName();
+                        astData.classes.add(cname);
+                    } else {
+                        cname = cBinding.getQualifiedName();
+                        astData.classes.add(cname);
+                    }
+                    String mname = mBinding.getKey().split("\\.")[1];
+                    if (astData.methods.containsKey(cname)) {
+                        astData.methods.get(cname).add(mname);
+                    } else {
+                        astData.methods.put(cname, new HashSet<>(Arrays.asList(mname)));
+                    }
                 }
                 return true;
             }
 
             public boolean visit(TypeDeclaration type) {
-                // check if interface or class
-                if (!type.isInterface()) {
-                    ITypeBinding binding = type.resolveBinding();
-                    ITypeBinding superClass = binding.getSuperclass();
-                    ITypeBinding[] interfaces = binding.getInterfaces();
-                    if (interfaces.length > 0) {
-                        for (ITypeBinding iface : interfaces) {
-                            if (iface.isParameterizedType()) {
-                                astData.classes.add(iface.getTypeDeclaration().getQualifiedName());
-                            } else {
-                                astData.classes.add(iface.getQualifiedName());
-                            }
+                ITypeBinding binding = type.resolveBinding();
+                ITypeBinding superClass = binding.getSuperclass();
+                ITypeBinding[] interfaces = binding.getInterfaces();
+                if (superClass != null) {
+                    if (!superClass.isFromSource()) {
+                        if (superClass.isParameterizedType()) {
+                            astData.classes.add(superClass.getTypeDeclaration().getQualifiedName());
+                        } else {
+                            astData.classes.add(superClass.getQualifiedName());
                         }
                     }
-                    if (superClass.isParameterizedType()) {
-                        astData.classes.add(superClass.getTypeDeclaration().getQualifiedName());
-                    } else {
-                        astData.classes.add(superClass.getQualifiedName());
+                }
+                for (ITypeBinding iface : interfaces) {
+                    if (!iface.isFromSource()) {
+                        if (iface.isParameterizedType()) {
+                            astData.classes.add(iface.getTypeDeclaration().getQualifiedName());
+                        } else {
+                            astData.classes.add(iface.getQualifiedName());
+                        }
                     }
                 }
+                addUserClasses(binding.getQualifiedName());
                 return true;
             }
 
@@ -313,18 +364,6 @@ public class Checker {
                 readMethodFile(table.getString("method_file"), blistMethods);
             } else {
                 System.err.println("Cannot find [blacklist] in config.toml");
-            }
-            table = result.getTableOrEmpty("user_classes");
-            if (!table.isEmpty()) {
-                List<Object> l = table.getArray("class_names").toList();
-                for (Object o : l) {
-                    if (o instanceof String) {
-                        wlistClasses.add((String) o);
-                    } else {
-                        System.err.println("Wrong type in source files. Expected string!");
-                        System.exit(1);
-                    }
-                }
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -42,7 +42,6 @@ public class Launcher {
                     fast = true;
                 }
                 Checker checker = new Checker(config, fast);
-                checker.printData();
                 checker.execute();
 
             } else if (mode.equals("rewriter")) {
