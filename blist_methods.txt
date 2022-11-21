@@ -13,7 +13,6 @@ java.lang.Double toHexString(D)Ljava/lang/String;
 java.lang.Double toString()Ljava/lang/String;
 java.lang.Double toString(D)Ljava/lang/String;
 java.lang.Double valueOf(Ljava/lang/String;)Ljava/lang/Double;|Ljava/lang/NumberFormatException;
-
 java.lang.Float describeConstable()Ljava/util/Optional<Ljava/lang/constant/DynamicConstantDesc<Ljava/lang/Float;>;>;
 java.lang.Float floatToRawIntBits(F)J
 java.lang.Float resolveConstantDesc resolveConstantDesc(Ljava/lang/invoke/MethodHandles$Lookup;)Ljava/lang/Float;
@@ -23,36 +22,65 @@ java.lang.Float toHexString(F)Ljava/lang/String;
 java.lang.Float toString()Ljava/lang/String;
 java.lang.Float toString(F)Ljava/lang/String;
 java.lang.Float valueOf(Ljava/lang/String;)Ljava/lang/Float;|Ljava/lang/NumberFormatException;
-
 java.lang.Integer describeConstable()Ljava/util/Optional<Ljava/lang/constant/DynamicConstantDesc<Ljava/lang/Integer;>;>;
 java.lang.Integer resolveConstantDesc resolveConstantDesc(Ljava/lang/invoke/MethodHandles$Lookup;)Ljava/lang/Integer;
 java.lang.Integer getInteger(Ljava/lang/String;)Ljava/lang/Integer;
 java.lang.Integer getInteger(Ljava/lang/String;I)Ljava/lang/Integer;
 java.lang.Integer getInteger(Ljava/lang/String;Ljava/lang/Integer;)Ljava/lang/Integer;
-
-
 java.lang.Long describeConstable()Ljava/util/Optional<Ljava/lang/constant/DynamicConstantDesc<Ljava/lang/Long;>;>;
 java.lang.Long resolveConstantDesc resolveConstantDesc(Ljava/lang/invoke/MethodHandles$Lookup;)Ljava/lang/Long;
 java.lang.Long getLong(Ljava/lang/String;)Ljava/lang/Long;
 java.lang.Long getLong(Ljava/lang/String;J)Ljava/lang/Long;
 java.lang.Long getLong(Ljava/lang/String;Ljava/lang/Long;)Ljava/lang/Long;
-
 java.lang.Math ulp(D)D
 java.lang.Math ulp(F)F
-
+java.lang.Object hashCode()I
+java.lang.Object toString()Ljava/lang/String;
 java.lang.Short describeConstable()Ljava/util/Optional<Ljava/lang/constant/DynamicConstantDesc<Ljava/lang/Short;>;>;
 java.lang.Short resolveConstantDesc resolveConstantDesc(Ljava/lang/invoke/MethodHandles$Lookup;)Ljava/lang/Short;
-
 java.lang.StrictMath ulp(D)D
 java.lang.StrictMath ulp(F)F
-
+java.lang.String ([BIILjava/nio/charset/Charset;)V
+java.lang.String ([BLjava/nio/charset/Charset;)V
+java.lang.String chars()Ljava/util/stream/IntStream;
 java.lang.String codePoints()Ljava/util/stream/IntStream;
-
 java.lang.String describeConstable()Ljava/util/Optional<Ljava/lang/constant/DynamicConstantDesc<Ljava/lang/String;>;>;
+java.lang.String format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+java.lang.String format(Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
+java.lang.String formatted([Ljava/lang/Object;)Ljava/lang/String;
 java.lang.String intern()Ljava/lang/String;
+java.lang.String lines()Ljava/util/stream/Stream<Ljava/lang/String;>;
 java.lang.String resolveConstantDesc resolveConstantDesc(Ljava/lang/invoke/MethodHandles$Lookup;)Ljava/lang/String;
-java/lang/String toLowerCase(Ljava/util/Locale;)Ljava/lang/String;
-java/lang/String toUpperCase(Ljava/util/Locale;)Ljava/lang/String;
+java/lang.String toLowerCase(Ljava/util/Locale;)Ljava/lang/String;
+java.lang.String toUpperCase(Ljava/util/Locale;)Ljava/lang/String;
+java.lang.String transform<R:Ljava/lang/Object;>(Ljava/util/function/Function<-Ljava/lang/String;+TR;>;)TR;%<Ljava/lang/Object;>
 java.lang.String valueOf(D)Ljava/lang/String;
 java.lang.String valueOf(F)Ljava/lang/String;
-
+java.lang.String valueOf(Ljava/lang/Object;)Ljava/lang/String;
+java.lang.StringBuffer append(D)Ljava/lang/StringBuffer;
+java.lang.StringBuffer append(F)Ljava/lang/StringBuffer;
+java.lang.StringBuffer append(Ljava/lang/Object;)Ljava/lang/StringBuffer;
+java.lang.StringBuffer chars()Ljava/util/stream/IntStream;
+java.lang.StringBuffer codePoints()Ljava/util/stream/IntStream;
+java.lang.StringBuffer insert(ILjava/lang/Object;)Ljava/lang/StringBuffer;
+#java.util.AbstractCollection hashCode()I
+#java.util.AbstractCollection toString()Ljava/lang/String;
+#java.util.AbstractList hashCode()I
+#java.util.AbstractList toString()Ljava/lang/String;
+#java.util.AbstractMap hashCode()I
+#java.util.AbstractMap toString()Ljava/lang/String;
+java.util.ArrayList forEach(Ljava/util/function/Consumer<-TE;>;)V
+java.util.ArrayList hashCode()I
+java.util.ArrayList removeIf(Ljava/util/function/Predicate<-TE;>;)Z
+java.util.ArrayList spliterator()Ljava/util/Spliterator<TE;>;
+java.util.ArrayList toString()Ljava/lang/String;
+java.util.Collection parallelStream()Ljava/util/stream/Stream<TE;>;
+java.util.HashMap compute(TK;Ljava/util/function/BiFunction<-TK;-TV;+TV;>;)TV;
+java.util.HashMap computeIfAbsent(TK;Ljava/util/function/Function<-TK;+TV;>;)TV;
+java.util.HashMap computeIfPresent(TK;Ljava/util/function/BiFunction<-TK;-TV;+TV;>;)TV;
+java.util.HashMap merge(TK;TV;Ljava/util/function/BiFunction<-TV;-TV;+TV;>;)TV;
+java.util.Iterator forEachRemaining(Ljava/util/function/Consumer<-TE;>;)V
+java.util.LinkedHashMap forEach(Ljava/util/function/BiConsumer<-TK;-TV;>;)V
+java.util.LinkedHashMap replaceAll(Ljava/util/function/BiFunction<-TK;-TV;+TV;>;)V
+java.util.LinkedHashSet spliterator()Ljava/util/Spliterator<TE;>;
+java.util.LinkedList spliterator()Ljava/util/Spliterator<TE;>;

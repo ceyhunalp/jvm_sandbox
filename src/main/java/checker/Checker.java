@@ -65,19 +65,18 @@ public class Checker {
                 System.out.println("Checking source file: " + file);
                 CompilationUnit cu = createCompilationUnit(file, rootDir);
                 ASTData astData = extractASTData(cu);
+                printASTData(astData);
                 // Check if the declaring classes of the methods are whitelisted
                 for (String cname : astData.methods.keySet()) {
                     System.out.println("Checking class: " + cname);
                     HashSet<String> methods = astData.methods.get(cname);
                     if (wlistClasses.contains(cname)) {
-                        // If the declaring class is whitelisted we still need to make sure that all of its methods
-                        // are whitelisted as well
+                        // If the declaring class is whitelisted we still need to make sure that we don't use a
+                        // blacklisted method from this class
                         if (blistMethods.containsKey(cname)) {
                             HashSet<String> blist = blistMethods.get(cname);
                             for (String mname : methods) {
                                 if (blist.contains(mname)) {
-                                    System.out.println("Class: " + cname + " - Method: " + mname + " is blacklisted");
-                                } else {
                                     System.out.println("Class: " + cname + " is whitelisted but " + mname + " is not");
                                 }
                             }
@@ -120,13 +119,10 @@ public class Checker {
                 }
             }
         }
-        for (String s : userDefined) {
-            System.out.println("user defined : " + s);
-        }
     }
 
     private void printASTData(ASTData data) {
-        System.out.println("============");
+        System.out.println("====== PRINTING ASTDATA ======");
         for (String c : data.classes) {
             System.out.println("CLASS: " + c);
         }
@@ -134,6 +130,7 @@ public class Checker {
         for (String c : data.methods.keySet()) {
             System.out.println(c + " --> " + data.methods.get(c).toString());
         }
+        System.out.println("============");
     }
 
     public CompilationUnit createCompilationUnit(String srcFile, String[] srcPaths) {
@@ -144,7 +141,6 @@ public class Checker {
         parser.setResolveBindings(true);
         parser.setBindingsRecovery(true);
         parser.setUnitName(srcFile);
-        System.out.println(Arrays.toString(srcPaths));
         parser.setEnvironment(null, srcPaths, null, true);
         Map<String, String> options = JavaCore.getOptions();
         JavaCore.setComplianceOptions(JavaCore.latestSupportedJavaVersion(), options);
@@ -196,11 +192,16 @@ public class Checker {
                     if (cBinding.isParameterizedType()) {
                         cname = cBinding.getTypeDeclaration().getQualifiedName();
                         astData.classes.add(cname);
+                        ITypeBinding[] args = cBinding.getTypeArguments();
+                        for (ITypeBinding arg : args) {
+                            astData.classes.add(arg.getQualifiedName());
+                        }
                     } else {
                         cname = cBinding.getQualifiedName();
                         astData.classes.add(cname);
                     }
-                    String mname = mBinding.getKey().split("\\.")[1];
+                    String methodDeclaration = mBinding.getMethodDeclaration().getKey();
+                    String mname = methodDeclaration.split("\\.")[1];
                     if (astData.methods.containsKey(cname)) {
                         astData.methods.get(cname).add(mname);
                     } else {
@@ -394,13 +395,18 @@ public class Checker {
             reader = new BufferedReader(new FileReader(path));
             line = reader.readLine();
             while (line != null) {
-                tokens = line.split(" ");
-                if (hm.containsKey(tokens[0])) {
-                    hm.get(tokens[0]).add(tokens[1]);
-                } else {
-                    HashSet<String> hs = new HashSet<>();
-                    hs.add(tokens[1]);
-                    hm.put(tokens[0], hs);
+                // TODO: Remove this check. This is here temporarily to be able to comment out lines in the .txt files
+                if (line.length() > 0) {
+                    if (!(line.charAt(0) == '#')) {
+                        tokens = line.split(" ");
+                        if (hm.containsKey(tokens[0])) {
+                            hm.get(tokens[0]).add(tokens[1]);
+                        } else {
+                            HashSet<String> hs = new HashSet<>();
+                            hs.add(tokens[1]);
+                            hm.put(tokens[0], hs);
+                        }
+                    }
                 }
                 line = reader.readLine();
             }
