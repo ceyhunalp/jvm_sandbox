@@ -5,46 +5,54 @@ import org.objectweb.asm.Opcodes;
 
 public class MethodRewriter extends MethodVisitor {
 
-    public MethodRewriter(MethodVisitor mv) {
+    String mathLib;
+
+    public MethodRewriter(MethodVisitor mv, String mathLib) {
         super(Opcodes.ASM9, mv);
+        this.mathLib = mathLib;
     }
 
     public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
-        System.out.println("MethodInst: " + owner + " " + name);
+        System.out.println("MethodInst: " + owner + " " + name + " " + descriptor);
         if (owner.equals("java/lang/Math") || owner.equals("java/lang/StrictMath")) {
             switch (name) {
-                case "log":
-                    mv.visitMethodInsn(opcode, "lib/DMathMPFR", "log", descriptor, isInterface);
-                    break;
-                case "log10":
-                    mv.visitMethodInsn(opcode, "lib/DMathMPFR", "log10", descriptor, isInterface);
-                    break;
-                case "log1p":
-                    mv.visitMethodInsn(opcode, "lib/DMathMPFR", "log1p", descriptor, isInterface);
-                    break;
-                case "exp":
-                    mv.visitMethodInsn(opcode, "lib/DMathMPFR", "exp", descriptor, isInterface);
-                    break;
-                case "pow":
-                    mv.visitMethodInsn(opcode, "lib/DMathMPFR", "pow", descriptor, isInterface);
-                    break;
-                case "sin":
-                    mv.visitMethodInsn(opcode, "lib/DMathMPFR", "sin", descriptor, isInterface);
-                    break;
-                case "cos":
-                    mv.visitMethodInsn(opcode, "lib/DMathMPFR", "cos", descriptor, isInterface);
-                    break;
-                case "tan":
-                    mv.visitMethodInsn(opcode, "lib/DMathMPFR", "tan", descriptor, isInterface);
-                    break;
-                case "cbrt":
-                    mv.visitMethodInsn(opcode, "lib/DMathMPFR", "cbrt", descriptor, isInterface);
-                    break;
-                case "hypot":
-                    mv.visitMethodInsn(opcode, "lib/DMathMPFR", "hypot", descriptor, isInterface);
-                    break;
                 case "abs":
-                    mv.visitMethodInsn(opcode, "lib/DMathMPFR", "abs", descriptor, isInterface);
+                case "max":
+                case "min":
+                    if (descriptor.equals("(D)D") || descriptor.equals("(F)F")) {
+                        mv.visitMethodInsn(opcode, mathLib, name, descriptor, isInterface);
+                    }
+                    break;
+                case "acos":
+                case "asin":
+                case "atan":
+                case "atan2":
+                case "cbrt":
+                case "ceil":
+                case "copysign":
+                case "cos":
+                case "cosh":
+                case "exp":
+                case "expm1":
+                case "floor":
+                case "getExponent":
+                case "hypot":
+                case "IEEEremainder":
+                case "log":
+                case "log10":
+                case "log1p":
+                case "nextAfter":
+                case "nextDown":
+                case "nextUp":
+                case "pow":
+                case "rint":
+                case "round":
+                case "signum":
+                case "sin":
+                case "sinh":
+                case "tan":
+                case "tanh":
+                    mv.visitMethodInsn(opcode, mathLib, name, descriptor, isInterface);
                     break;
                 default:
             }

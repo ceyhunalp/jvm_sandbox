@@ -63,24 +63,32 @@ java.lang.StringBuffer append(Ljava/lang/Object;)Ljava/lang/StringBuffer;
 java.lang.StringBuffer chars()Ljava/util/stream/IntStream;
 java.lang.StringBuffer codePoints()Ljava/util/stream/IntStream;
 java.lang.StringBuffer insert(ILjava/lang/Object;)Ljava/lang/StringBuffer;
-#java.util.AbstractCollection hashCode()I
-#java.util.AbstractCollection toString()Ljava/lang/String;
-#java.util.AbstractList hashCode()I
-#java.util.AbstractList toString()Ljava/lang/String;
-#java.util.AbstractMap hashCode()I
-#java.util.AbstractMap toString()Ljava/lang/String;
+# java.util.AbstractCollection hashCode()I
+# java.util.AbstractCollection toString()Ljava/lang/String;
+# java.util.AbstractList hashCode()I
+# java.util.AbstractList toString()Ljava/lang/String;
+# java.util.AbstractMap hashCode()I
+# java.util.AbstractMap toString()Ljava/lang/String;
 java.util.ArrayList forEach(Ljava/util/function/Consumer<-TE;>;)V
 java.util.ArrayList hashCode()I
 java.util.ArrayList removeIf(Ljava/util/function/Predicate<-TE;>;)Z
 java.util.ArrayList spliterator()Ljava/util/Spliterator<TE;>;
 java.util.ArrayList toString()Ljava/lang/String;
-java.util.Collection parallelStream()Ljava/util/stream/Stream<TE;>;
-java.util.HashMap compute(TK;Ljava/util/function/BiFunction<-TK;-TV;+TV;>;)TV;
-java.util.HashMap computeIfAbsent(TK;Ljava/util/function/Function<-TK;+TV;>;)TV;
-java.util.HashMap computeIfPresent(TK;Ljava/util/function/BiFunction<-TK;-TV;+TV;>;)TV;
-java.util.HashMap merge(TK;TV;Ljava/util/function/BiFunction<-TV;-TV;+TV;>;)TV;
-java.util.Iterator forEachRemaining(Ljava/util/function/Consumer<-TE;>;)V
+# java.util.Collection parallelStream()Ljava/util/stream/Stream<TE;>;
+# java.util.HashMap compute(TK;Ljava/util/function/BiFunction<-TK;-TV;+TV;>;)TV;
+# java.util.HashMap computeIfAbsent(TK;Ljava/util/function/Function<-TK;+TV;>;)TV;
+# java.util.HashMap computeIfPresent(TK;Ljava/util/function/BiFunction<-TK;-TV;+TV;>;)TV;
+# java.util.HashMap merge(TK;TV;Ljava/util/function/BiFunction<-TV;-TV;+TV;>;)TV;
+# java.util.Iterator forEachRemaining(Ljava/util/function/Consumer<-TE;>;)V
 java.util.LinkedHashMap forEach(Ljava/util/function/BiConsumer<-TK;-TV;>;)V
 java.util.LinkedHashMap replaceAll(Ljava/util/function/BiFunction<-TK;-TV;+TV;>;)V
 java.util.LinkedHashSet spliterator()Ljava/util/Spliterator<TE;>;
 java.util.LinkedList spliterator()Ljava/util/Spliterator<TE;>;
+java.util.Vector elements()Ljava/util/Enumeration<TE;>;
+java.util.Vector forEach(Ljava/util/function/Consumer<-TE;>;)V
+java.util.Vector hashCode()I
+java.util.Vector removeIf(Ljava/util/function/Predicate<-TE;>;)Z
+java.util.Vector replaceAll(Ljava/util/function/UnaryOperator<TE;>;)V
+java.util.Vector sort(Ljava/util/Comparator<-TE;>;)V
+java.util.Vector spliterator()Ljava/util/Spliterator<TE;>;
+java.util.Vector toString()Ljava/lang/String;

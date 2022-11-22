@@ -15,12 +15,12 @@ java.lang.Short
 java.lang.StrictMath
 java.lang.String
 java.lang.StringBuffer
+java.lang.Void
 java.util.ArrayList
-java.util.HashMap
-java.util.HashSet
 java.util.Iterator
 java.util.LinkedHashMap
 java.util.LinkedHashSet
 java.util.LinkedList
+java.util.ListIterator
 java.util.Stack
 java.util.Vector

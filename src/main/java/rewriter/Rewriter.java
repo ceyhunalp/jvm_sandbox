@@ -9,13 +9,18 @@ import java.io.IOException;
 
 public class Rewriter {
 
-    public Rewriter() {}
+    private static final String prefix = "lib/DMath";
+    public String mathLib;
+
+    public Rewriter(String mathLib) {
+        this.mathLib = prefix + mathLib;
+    }
 
     public void rewriteClass(String path) throws IOException {
         FileInputStream inStream = new FileInputStream(path);
         ClassReader reader = new ClassReader(inStream);
         ClassWriter cw = new ClassWriter(reader, ClassWriter.COMPUTE_FRAMES);
-        ClassAdapter cp = new ClassAdapter(cw);
+        ClassAdapter cp = new ClassAdapter(cw, mathLib);
         reader.accept(cp,0);
 
         FileOutputStream outStream = new FileOutputStream(path);

@@ -65,10 +65,10 @@ public class Checker {
                 System.out.println("Checking source file: " + file);
                 CompilationUnit cu = createCompilationUnit(file, rootDir);
                 ASTData astData = extractASTData(cu);
-                printASTData(astData);
+//                printASTData(astData);
                 // Check if the declaring classes of the methods are whitelisted
                 for (String cname : astData.methods.keySet()) {
-                    System.out.println("Checking class: " + cname);
+//                    System.out.println("Checking class: " + cname);
                     HashSet<String> methods = astData.methods.get(cname);
                     if (wlistClasses.contains(cname)) {
                         // If the declaring class is whitelisted we still need to make sure that we don't use a
@@ -101,7 +101,6 @@ public class Checker {
                 for (String cname : astData.classes) {
                     // If the class has a method in the source code, we have already checked it above
                     if (!astData.methods.containsKey(cname)) {
-                        System.out.println("mesela ben: " + cname);
                         if (!wlistClasses.contains(cname)) {
                             leftovers.add(cname);
                         } else {
@@ -113,10 +112,11 @@ public class Checker {
                 System.err.println("Wrong type in source files. Expected string!");
                 System.exit(1);
             }
-            for (String c : leftovers) {
-                if (!userDefined.contains(c)) {
-                    System.out.println("This is the end for class: " + c);
-                }
+        }
+        for (String c : leftovers) {
+            if (!userDefined.contains(c)) {
+                System.out.println("Class: " + c + " is not a user-defined class. It is not whitelisted and there" +
+                        " are not whitelisted methods of this class in the code!");
             }
         }
     }
@@ -166,14 +166,33 @@ public class Checker {
         ASTData astData = new ASTData();
 
         cu.accept(new ASTVisitor() {
+
+            public void getTypeArguments(ITypeBinding arg) {
+                if (arg.isArray()) {
+                    ITypeBinding eltType = arg.getElementType();
+                    getTypeArguments(eltType);
+                } else if (arg.isParameterizedType()) {
+                    ITypeBinding[] typeArgs = arg.getTypeArguments();
+                    for (ITypeBinding t : typeArgs) {
+                        getTypeArguments(t);
+                    }
+                } else if (arg.isClass() || arg.isInterface() || arg.isEnum()) {
+                    astData.classes.add(arg.getQualifiedName());
+                }
+                return;
+            }
+
             public boolean helperTypeBinding(ITypeBinding tBinding) {
                 if (!tBinding.isFromSource()) {
-                    if (!tBinding.isPrimitive()) {
-                        if (tBinding.isParameterizedType()) {
-                            astData.classes.add(tBinding.getTypeDeclaration().getQualifiedName());
-                        } else {
-                            astData.classes.add(tBinding.getQualifiedName());
+                    if(tBinding.isParameterizedType()) {
+                        astData.classes.add(tBinding.getTypeDeclaration().getQualifiedName());
+                        ITypeBinding[] args = tBinding.getTypeArguments();
+                        for (ITypeBinding arg : args) {
+                            getTypeArguments(arg);
                         }
+                    } else if (tBinding.isArray()) {
+                        ITypeBinding eltType = tBinding.getElementType();
+                        getTypeArguments(eltType);
                     }
                 }
                 return true;
@@ -194,7 +213,10 @@ public class Checker {
                         astData.classes.add(cname);
                         ITypeBinding[] args = cBinding.getTypeArguments();
                         for (ITypeBinding arg : args) {
-                            astData.classes.add(arg.getQualifiedName());
+                            helperTypeBinding(arg);
+//                            if (!arg.isPrimitive()) {
+//                                astData.classes.add(arg.getQualifiedName());
+//                            }
                         }
                     } else {
                         cname = cBinding.getQualifiedName();
