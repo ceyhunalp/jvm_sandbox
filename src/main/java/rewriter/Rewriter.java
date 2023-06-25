@@ -19,6 +19,7 @@ public class Rewriter {
     public void rewriteClass(String path) throws IOException {
         FileInputStream inStream = new FileInputStream(path);
         ClassReader reader = new ClassReader(inStream);
+        //TODO: Try with COMPUTE_MAX
         ClassWriter cw = new ClassWriter(reader, ClassWriter.COMPUTE_FRAMES);
         ClassAdapter cp = new ClassAdapter(cw, mathLib);
         reader.accept(cp,0);

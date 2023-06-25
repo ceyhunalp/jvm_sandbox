@@ -1,3 +1,6 @@
 *.toml
 target/*
 jars/*
+
+oldjars/*
+dependency-reduced-pom.xml

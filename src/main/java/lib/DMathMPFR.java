@@ -3,7 +3,6 @@ package lib;
 import org.kframework.mpfr.BigFloat;
 import org.kframework.mpfr.BinaryMathContext;
 import java.math.RoundingMode;
-import java.sql.SQLSyntaxErrorException;
 
 public class DMathMPFR {
 
@@ -11,13 +10,11 @@ public class DMathMPFR {
     static final private BinaryMathContext mcDouble = BinaryMathContext.BINARY64.withRoundingMode(RoundingMode.HALF_EVEN);
 
     public static double abs(double a) {
-        //System.out.println("In abs(double)");
         BigFloat bf = new BigFloat(a, mcDouble);
         return bf.abs(mcDouble).doubleValue();
     }
 
     public static float abs(float a) {
-        //System.out.println("In abs(float)");
         BigFloat bf = new BigFloat(a, mcFloat);
         return bf.abs(mcFloat).floatValue();
     }

@@ -56,6 +56,12 @@ public class MethodRewriter extends MethodVisitor {
                     break;
                 default:
             }
+        } else if(owner.equals("java/lang/Double")) {
+            if ("doubleToRawLongBits".equals(name)) {
+                mv.visitMethodInsn(opcode, owner, "doubleToLongBits", descriptor, isInterface);
+            } else {
+                mv.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
+            }
         } else {
             mv.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
         }

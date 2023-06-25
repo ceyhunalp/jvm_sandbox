@@ -1,3 +1,5 @@
+package launcher;
+
 import checker.Checker;
 import org.apache.commons.cli.*;
 import rewriter.Rewriter;
@@ -49,7 +51,6 @@ public class Launcher {
                 }
                 Checker checker = new Checker(config, fast);
                 checker.execute();
-
             } else if (mode.equals("rewriter")) {
                 String mathLib = null;
                 String path = null;
@@ -83,9 +84,7 @@ public class Launcher {
                 System.err.println("Invalid argument value for mode");
                 System.exit(1);
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
 
@@ -120,6 +119,9 @@ public class Launcher {
 //        BigFloat bfx, bfy;
 //        Random r = new Random();
 //        BinaryMathContext mc = BinaryMathContext.BINARY64.withRoundingMode(RoundingMode.FLOOR);
+//        bfx = new BigFloat(0, mc);
+//        bfy = bfx.cos(mc);
+//        System.out.printf("%.5f %.5f\n", bfx.doubleValue(), bfy.doubleValue());
 //        for (int i = 0; i < 1000000; i++) {
 //            idx = i % 1000;
 //            bfx = new BigFloat(xs[idx], mc);
