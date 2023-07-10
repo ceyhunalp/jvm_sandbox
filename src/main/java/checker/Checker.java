@@ -65,7 +65,7 @@ public class Checker {
                 System.out.println("Checking source file: " + file);
                 CompilationUnit cu = createCompilationUnit(file, rootDir);
                 ASTData astData = extractASTData(cu);
-//                printASTData(astData);
+                printASTData(astData);
                 // Check if the declaring classes of the methods are whitelisted
                 for (String cname : astData.methods.keySet()) {
 //                    System.out.println("Checking class: " + cname);

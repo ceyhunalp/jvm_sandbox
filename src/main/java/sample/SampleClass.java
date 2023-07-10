@@ -1,41 +1,48 @@
 package sample;
 
+import java.util.LinkedHashSet;
 import java.util.Random;
 
 public class SampleClass {
 
-    final static double NANOSECS = 1E9;
-    // No canonicalization
-    public static void serializeResult(double[] result, double[] bufResult) {
-        for (int i = 0; i < result.length; i++) {
-            long lng = Double.doubleToRawLongBits(result[i]);
-            for (int j = 0; j < 8; j++) {
-                bufResult[i * 8 + (7 - j)] =
-                        (byte) ((lng >> ((7 - j) * 8)) & 0xff);
-            }
-        }
-    }
-
-    // Canonicalized
-    public static void serializeCanonResult(double[] result, double[] bufResult) {
-        for (int i = 0; i < result.length; i++) {
-            long lng = Double.doubleToLongBits(result[i]);
-            for (int j = 0; j < 8; j++) {
-                bufResult[i * 8 + (7 - j)] =
-                        (byte) ((lng >> ((7 - j) * 8)) & 0xff);
-            }
-        }
-    }
+//    final static double NANOSECS = 1E9;
+//    // No canonicalization
+//    public static void serializeResult(double[] result, double[] bufResult) {
+//        for (int i = 0; i < result.length; i++) {
+//            long lng = Double.doubleToRawLongBits(result[i]);
+//            for (int j = 0; j < 8; j++) {
+//                bufResult[i * 8 + (7 - j)] =
+//                        (byte) ((lng >> ((7 - j) * 8)) & 0xff);
+//            }
+//        }
+//    }
+//
+//    // Canonicalized
+//    public static void serializeCanonResult(double[] result, double[] bufResult) {
+//        for (int i = 0; i < result.length; i++) {
+//            long lng = Double.doubleToLongBits(result[i]);
+//            for (int j = 0; j < 8; j++) {
+//                bufResult[i * 8 + (7 - j)] =
+//                        (byte) ((lng >> ((7 - j) * 8)) & 0xff);
+//            }
+//        }
+//    }
 
     public static void main(String[] args) {
-        double x = Math.sin(0);
-        System.out.printf("%.9f\n", x);
 
-        //long l = 0xfff0000000000009L;
-        //System.out.println(l);
-        //double d = Double.longBitsToDouble(l);
-        //System.out.println(Double.doubleToLongBits(d));
-        //System.out.println(Double.doubleToRawLongBits(d));
+        LinkedHashSet<Integer> h = new LinkedHashSet<>();
+        h.add(4);
+        h.iterator();
+
+//        double x = Math.sin(0);
+//        System.out.printf("%.20f\n", x);
+//
+//        long l = 0xfff0000000000009L;
+//        System.out.printf("%x\n", l);
+//        double d = Double.longBitsToDouble(l);
+//        System.out.println(d);
+//        System.out.printf("%x\n", Double.doubleToLongBits(d));
+//        System.out.printf("%x\n", Double.doubleToRawLongBits(d));
 
         //double[] result = new double[4000000];
         //Random rand = new Random();
