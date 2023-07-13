@@ -36,7 +36,7 @@ public class Write {
         ltsID = new byte[SEEDBYTES];
         policy = new byte[SEEDBYTES];
 
-        byte[] seedBytes = ByteBuffer.allocate(4).putInt(seed).array();
+        byte[] seedBytes = ByteBuffer.allocate(SEEDBYTES).putInt(seed).array();
         Sodium.randombytes_buf_deterministic(ltsID, SEEDBYTES, seedBytes);
         Sodium.randombytes_buf_deterministic(policy, SEEDBYTES, seedBytes);
     }
@@ -141,15 +141,7 @@ public class Write {
         byte[] re = new byte[ED25519_SCALAR_BYTES];
         Sodium.crypto_core_ed25519_scalar_mul(re, r, e);
         Sodium.crypto_core_ed25519_scalar_add(f, s, re);
-
-//        System.out.print("write->e: ");
-//        Point.printHex(e);
-//        System.out.print("W: ");
-//        Point.printHex(W);
-//        System.out.print("Wbar: ");
-//        Point.printHex(Wbar);
-//        System.out.print("Hash: ");
-//        Point.printHex(hash);
+        Sodium.sodium_free(p);
         return 0;
     }
 
@@ -189,10 +181,6 @@ public class Write {
             System.err.println("Wbar error");
             return -1;
         }
-//        System.out.print("W: ");
-//        Point.printHex(W);
-//        System.out.print("Wbar: ");
-//        Point.printHex(Wbar);
 
         Pointer p = Sodium.malloc(104);
         if (Sodium.crypto_hash_sha256_init(p) != 0) {
@@ -210,14 +198,10 @@ public class Write {
         for (int i = ED25519_SCALAR_BYTES; i < ED25519_NONREDUCED_SCALAR_BYTES; i++) {
             hash[i] = (byte) 0;
         }
-//        System.out.print("Hash: ");
-//        Point.printHex(hash);
 
         byte[] e = new byte[ED25519_SCALAR_BYTES];
         Sodium.crypto_core_ed25519_scalar_reduce(e, hash);
-//        System.out.print("e: ");
-//        Point.printHex(e);
-
+        Sodium.sodium_free(p);
         if (Arrays.equals(e, this.e)) return 0;
         return -1;
     }

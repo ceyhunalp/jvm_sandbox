@@ -17,6 +17,7 @@ public class BCBenchmark {
 
     final static String HEADER = "avg,stddev,min,max";
     final static double MICROSECS = 1E3;
+    final static double NANOSECS = 1E9;
 
     public static void runCounterBenchmark(int seed, int wc, int ec,
                                            double[] times) {
@@ -24,17 +25,19 @@ public class BCBenchmark {
         byte[] X = new byte[Write.ED25519_CORE_BYTES];
         Sodium.crypto_core_ed25519_random(X);
         byte[] key = new byte[Write.KEY_SIZE];
-        Sodium.randombytes(key, Write.KEY_SIZE);
-        byte[] seedBytes = ByteBuffer.allocate(4).putInt(23).array();
+        byte[] seedBytes = ByteBuffer.allocate(Write.SEEDBYTES).putInt(23).array();
+        Sodium.randombytes_buf_deterministic(key, Write.KEY_SIZE, seedBytes);
         w.newWrite(X, key, Write.KEY_SIZE, seedBytes);
 
         long start, end;
         for (int i = 0; i < wc + ec; i++) {
             Counter.count = 0;
             start = System.nanoTime();
-            w.checkProof();
+            for (int j = 0; j < 1000000; j++) {
+                w.checkProof();
+            }
             end = System.nanoTime();
-            times[i] = (end - start) / MICROSECS;
+            times[i] = (end - start) / NANOSECS;
         }
         Counter.print();
     }
@@ -85,7 +88,6 @@ public class BCBenchmark {
             double[] execTimes = new double[ec];
             runCounterBenchmark(seed, wc, ec, allTimes);
             removeWarmupTimes(allTimes, execTimes, wc);
-
             writeStats(outdir, execTimes, prefix);
         }
     }
