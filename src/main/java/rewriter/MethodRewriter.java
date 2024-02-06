@@ -23,18 +23,21 @@ public class MethodRewriter extends MethodVisitor {
                         mv.visitMethodInsn(opcode, mathLib, name, descriptor, isInterface);
                     }
                     break;
+                case "copySign":
+                    mv.visitMethodInsn(opcode, "mpfr", name,
+                            descriptor, isInterface);
                 case "acos":
                 case "asin":
                 case "atan":
                 case "atan2":
                 case "cbrt":
                 case "ceil":
-                case "copysign":
                 case "cos":
                 case "cosh":
                 case "exp":
                 case "expm1":
                 case "floor":
+                case "fma":
                 case "getExponent":
                 case "hypot":
                 case "IEEEremainder":
@@ -48,15 +51,18 @@ public class MethodRewriter extends MethodVisitor {
                 case "rint":
                 case "round":
                 case "signum":
+                case "scalb":
                 case "sin":
                 case "sinh":
                 case "tan":
                 case "tanh":
+                case "toDegrees":
+                case "toRadians":
                     mv.visitMethodInsn(opcode, mathLib, name, descriptor, isInterface);
                     break;
                 default:
             }
-        } else if(owner.equals("java/lang/Double")) {
+        } else if (owner.equals("java/lang/Double")) {
             if ("doubleToRawLongBits".equals(name)) {
                 mv.visitMethodInsn(opcode, owner, "doubleToLongBits", descriptor, isInterface);
             } else {

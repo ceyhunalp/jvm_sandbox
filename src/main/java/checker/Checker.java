@@ -141,7 +141,10 @@ public class Checker {
         parser.setResolveBindings(true);
         parser.setBindingsRecovery(true);
         parser.setUnitName(srcFile);
-        parser.setEnvironment(null, srcPaths, null, true);
+        String[] cpEntries = new String[]{"/Users/alp/workspace/dedis/determ" +
+                "-sandbox/jvm_sandbox/target/classes"};
+//        parser.setEnvironment(null, srcPaths, null, true);
+        parser.setEnvironment(cpEntries, srcPaths, null, true);
         Map<String, String> options = JavaCore.getOptions();
         JavaCore.setComplianceOptions(JavaCore.latestSupportedJavaVersion(), options);
         parser.setCompilerOptions(options);
@@ -184,7 +187,7 @@ public class Checker {
 
             public boolean helperTypeBinding(ITypeBinding tBinding) {
                 if (!tBinding.isFromSource()) {
-                    if(tBinding.isParameterizedType()) {
+                    if (tBinding.isParameterizedType()) {
                         astData.classes.add(tBinding.getTypeDeclaration().getQualifiedName());
                         ITypeBinding[] args = tBinding.getTypeArguments();
                         for (ITypeBinding arg : args) {

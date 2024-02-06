@@ -22,5 +22,6 @@ java.util.LinkedHashMap
 java.util.LinkedHashSet
 java.util.LinkedList
 java.util.ListIterator
+java.util.Set
 java.util.Stack
 java.util.Vector

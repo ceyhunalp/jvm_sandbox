@@ -32,12 +32,14 @@ java.lang.Long resolveConstantDesc resolveConstantDesc(Ljava/lang/invoke/MethodH
 java.lang.Long getLong(Ljava/lang/String;)Ljava/lang/Long;
 java.lang.Long getLong(Ljava/lang/String;J)Ljava/lang/Long;
 java.lang.Long getLong(Ljava/lang/String;Ljava/lang/Long;)Ljava/lang/Long;
+java.lang.Math random()D
 java.lang.Math ulp(D)D
 java.lang.Math ulp(F)F
 java.lang.Object hashCode()I
 java.lang.Object toString()Ljava/lang/String;
 java.lang.Short describeConstable()Ljava/util/Optional<Ljava/lang/constant/DynamicConstantDesc<Ljava/lang/Short;>;>;
 java.lang.Short resolveConstantDesc resolveConstantDesc(Ljava/lang/invoke/MethodHandles$Lookup;)Ljava/lang/Short;
+java.lang.StrictMath random()D
 java.lang.StrictMath ulp(D)D
 java.lang.StrictMath ulp(F)F
 java.lang.String ([BIILjava/nio/charset/Charset;)V

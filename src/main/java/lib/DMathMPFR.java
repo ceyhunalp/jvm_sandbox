@@ -2,6 +2,7 @@ package lib;
 
 import org.kframework.mpfr.BigFloat;
 import org.kframework.mpfr.BinaryMathContext;
+
 import java.math.RoundingMode;
 
 public class DMathMPFR {
@@ -50,17 +51,24 @@ public class DMathMPFR {
         return bf.ceil(mcDouble).doubleValue();
     }
 
-    public static double copysign(double magnitude, double sign) {
-        BigFloat bfMagnitude = new BigFloat(magnitude, mcDouble);
-        BigFloat bfSign = new BigFloat(sign, mcDouble);
-        return BigFloat.copysign(bfMagnitude, bfSign, mcDouble).doubleValue();
+    public static double copySign(double magnitude, double sign) {
+        return Math.copySign(magnitude, (Double.isNaN(sign) ? 1.0d : sign));
     }
 
-    public static float copysign(float magnitude, float sign) {
-        BigFloat bfMagnitude = new BigFloat(magnitude, mcFloat);
-        BigFloat bfSign = new BigFloat(sign, mcFloat);
-        return BigFloat.copysign(bfMagnitude, bfSign, mcFloat).floatValue();
+    public static float copySign(float magnitude, float sign) {
+        return Math.copySign(magnitude, (Float.isNaN(sign) ? 1.0f : sign));
     }
+//    public static double copySign(double magnitude, double sign) {
+//        BigFloat bfMagnitude = new BigFloat(magnitude, mcDouble);
+//        BigFloat bfSign = new BigFloat(sign, mcDouble);
+//        return BigFloat.copysign(bfMagnitude, bfSign, mcDouble).doubleValue();
+//    }
+//
+//    public static float copySign(float magnitude, float sign) {
+//        BigFloat bfMagnitude = new BigFloat(magnitude, mcFloat);
+//        BigFloat bfSign = new BigFloat(sign, mcFloat);
+//        return BigFloat.copysign(bfMagnitude, bfSign, mcFloat).floatValue();
+//    }
 
     public static double cos(double a) {
         BigFloat bf = new BigFloat(a, mcDouble);
@@ -85,6 +93,20 @@ public class DMathMPFR {
     public static double floor(double a) {
         BigFloat bf = new BigFloat(a, mcDouble);
         return bf.floor(mcDouble).doubleValue();
+    }
+
+    public static double fma(double a, double b, double c) {
+        BigFloat bfA = new BigFloat(a, mcDouble);
+        BigFloat bfB = new BigFloat(b, mcDouble);
+        BigFloat bfC = new BigFloat(c, mcDouble);
+        return BigFloat.fma(bfA, bfB, bfC, mcDouble).doubleValue();
+    }
+
+    public static float fma(float a, float b, float c) {
+        BigFloat bfA = new BigFloat(a, mcFloat);
+        BigFloat bfB = new BigFloat(b, mcFloat);
+        BigFloat bfC = new BigFloat(c, mcFloat);
+        return BigFloat.fma(bfA, bfB, bfC, mcDouble).floatValue();
     }
 
     public static int getExponent(double d) {
@@ -170,12 +192,12 @@ public class DMathMPFR {
         return bf.nextDown(mcFloat.minExponent, mcFloat.maxExponent).floatValue();
     }
 
-    public static double nextUp(double d){
+    public static double nextUp(double d) {
         BigFloat bf = new BigFloat(d, mcDouble);
         return bf.nextUp(mcDouble.minExponent, mcDouble.maxExponent).doubleValue();
     }
 
-    public static double nextUp(float f){
+    public static double nextUp(float f) {
         BigFloat bf = new BigFloat(f, mcFloat);
         return bf.nextUp(mcFloat.minExponent, mcFloat.maxExponent).floatValue();
     }
@@ -193,12 +215,12 @@ public class DMathMPFR {
 
     public static long round(double a) {
         BigFloat bf = new BigFloat(a, mcDouble);
-        return (long)(bf.round(mcDouble).doubleValue());
+        return (long) (bf.round(mcDouble).doubleValue());
     }
 
     public static long round(float a) {
         BigFloat bf = new BigFloat(a, mcFloat);
-        return (long)(bf.round(mcFloat).floatValue());
+        return (long) (bf.round(mcFloat).floatValue());
     }
 
 //    public static double scalb(double d, int scaleFactor) {
@@ -240,4 +262,13 @@ public class DMathMPFR {
         BigFloat bf = new BigFloat(x, mcDouble);
         return bf.tanh(mcDouble).doubleValue();
     }
+
+    public static double toDegrees(double angrad) {
+        return Math.toDegrees(angrad);
+    }
+
+    public static double toRadians(double angdeg) {
+        return Math.toDegrees(angdeg);
+    }
+
 }
